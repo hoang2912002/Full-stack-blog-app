@@ -2,12 +2,23 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignInInput } from './dto/signin.input';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { verify } from 'argon2';
-
+import { JwtService } from '@nestjs/jwt';
+import { AuthJwtPayload } from './types/auth-jwtPayload';
+import { User } from 'src/user/entities/user.entity';
+interface AuthUser {
+  id: number;
+  email: string;
+  name: string;
+  password: string;
+}
 @Injectable()
 export class AuthService {
-    constructor(private prisma: PrismaService){}
-    async validateLocalUser(signInInput:SignInInput){
-        const {email,password} = signInInput
+    constructor(
+        private prisma: PrismaService,
+        private jwtService: JwtService
+    ){}
+    
+    async validateLocalUser({ email, password }: SignInInput){
         const user = await this.prisma.user.findUnique({
             where:{
                 email
@@ -18,6 +29,35 @@ export class AuthService {
         if(!checkPassword) throw new UnauthorizedException("Invalid Credentials")
         return user
 
+    }
+
+    async generateToken(userId:number){
+        const payload:AuthJwtPayload = {sub:userId}
+        const accessToken = await this.jwtService.signAsync(payload)
+        return {accessToken};
+    }
+
+    async login(user:User){
+        const {accessToken} = await this.generateToken(user.id)
+        console.log("login",user,accessToken)
+        return {
+            id: user.id,
+            name:user.name,
+            avatar:user.avatar,
+            accessToken
+        }
+    }
+
+    async validateJwtUser(userId:number){
+        const user = await this.prisma.user.findFirst({
+            where:{
+                id: userId
+            }
+        })
+
+        if(!user) throw new UnauthorizedException("User Not Found")
+        const currentUser = {id: user.id}
+        return currentUser
     }
     
 }

@@ -11,6 +11,7 @@ import { CommentModule } from './comment/comment.module';
 import { TagModule } from './tag/tag.module';
 import { LikeModule } from './like/like.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { AuthModule } from './auth/auth.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), "src/graphql/schema.gql")
       //tức là khi chạy ứng dụng, nestjs sẽ tự động tạo schema Graphql theo đường dẫn
-      // ở dist
+      // ở dist và đồng thời nó sẽ autofill cái field mà UI cần tối ưu CEO
     }),
     PostModule,
     UserModule,
@@ -27,6 +28,9 @@ import { AuthModule } from './auth/auth.module';
     TagModule,
     LikeModule,
     AuthModule,
+    ConfigModule.forRoot({
+      isGlobal:true
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
