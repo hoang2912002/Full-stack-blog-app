@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -14,7 +13,7 @@ datasource db {
 model User {
   id Int @id @default(autoincrement()) //@id là primary key của bảng
   name String
-  email String
+  email String @unique
   bio String? //? có nghĩa là field này có thề null
   avatar String?
   password String
@@ -62,8 +61,8 @@ model Like {
   id Int @id @default(autoincrement())
   userId Int
   postId Int
-  users User @relation(fields: [userId], references: [id])
-  posts Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

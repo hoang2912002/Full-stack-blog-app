@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from 'generated/prisma';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable() // đánh dấu class PrismaService là 1 service
 export class PrismaService extends PrismaClient implements OnModuleInit {
