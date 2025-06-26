@@ -39,7 +39,6 @@ export class AuthService {
 
     async login(user:User){
         const {accessToken} = await this.generateToken(user.id)
-        console.log("login",user,accessToken)
         return {
             id: user.id,
             name:user.name,

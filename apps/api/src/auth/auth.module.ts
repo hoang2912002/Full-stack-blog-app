@@ -21,6 +21,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       },
     }),
   ],
-  providers: [AuthResolver, AuthService, PrismaService, JwtService,JwtStrategy],
+  providers: [AuthResolver, AuthService, PrismaService,JwtStrategy],
 })
 export class AuthModule {}

@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Next.js (font)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "node",
+      "args": ["node_modules/next/dist/bin/next", "dev", "apps/font"],
+      "cwd": "${workspaceFolder}",
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Debug API App",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "node",
+      "args": ["node_modules/next/dist/bin/next", "dev", "apps/api"],
+      "cwd": "${workspaceFolder}",
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal"
+    }
+  ],
+  "compounds": [
+  {
+    "name": "Debug BOTH",
+    "configurations": ["Debug Next.js (font)", "Debug API App"]
+  }
+]
+}

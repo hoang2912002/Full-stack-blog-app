@@ -8,13 +8,13 @@ import { AuthService } from "../auth.service"
 
 export class JwtStrategy extends PassportStrategy(Strategy){
     constructor(
+        private authService:AuthService,
         private configService: ConfigService,
-        private authService:AuthService
     ){
         super({
             jwtFromRequest:ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ignoreExpiration:false,
             secretOrKey:configService.get<string>("JWT_SECRET"),
-            ignoreExpiration:false
         })
     }
     async validate(payload: AuthJwtPayload) {
