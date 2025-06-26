@@ -20,11 +20,8 @@ const DesktopNavbar = (props:Props) =>{
 
     const isScrollDown = scrollPosition > 10
     const isHome = pathname === '/'
-    const isSignUp = pathname.startsWith("/auth")
 
-    if (isSignUp) {
-       return null;
-    }
+    
     return (
         <nav className={cn("hidden fixed w-full z-50 text-white top-0 md:block"
             ,{
