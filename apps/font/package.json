@@ -11,9 +11,12 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@radix-ui/react-slot": "^1.2.3",
+    "@types/jsdom": "^21.1.7",
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dompurify": "^3.2.6",
+    "jsdom": "^26.1.0",
     "lucide-react": "^0.522.0",
     "next": "15.3.4",
     "postcss": "^8.5.6",

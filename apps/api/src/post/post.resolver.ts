@@ -11,9 +11,30 @@ export class PostResolver {
   constructor(private readonly postService: PostService) {}
 
   // @UseGuards(JwtAuthGuard)
+
+  //() => [Post] nghĩa là kết quả sẽ trả về một mảng các đối tượng kiểu Post
+  //{ name: 'posts' } nghĩa là tên query trong schema GraphQL sẽ là posts
+  //Khi query được thực thi, context chính là đối tượng request được truyền từ NestJS sang GraphQL.
+  //@Args là cách lấy các tham số truyền từ Graphql
+  //skip,take để phục vụ cho phân trang
   @Query(() => [Post], { name: 'posts' })
-  findAll(@Context() context) {
+  findAll(
+    @Context() context,
+    @Args("skip",{nullable:true}) skip?:number,
+    @Args("take",{nullable:true}) take?:number
+  ) {
     const user = context.req.user
-    return this.postService.findAll();
+    return this.postService.findAll({skip,take});
   }
+
+  @Query(()=> Int, {name: "postCount"})
+  count(){
+    return this.postService.count()
+  }
+  
+  @Query(()=> Post, {name: "postById"})
+  getPostById(@Args("id",{type:()=>Int}) id:number){
+    return this.postService.findOne(id)
+  }
+  
 }
