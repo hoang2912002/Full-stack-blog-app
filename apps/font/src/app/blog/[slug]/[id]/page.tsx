@@ -2,6 +2,7 @@ import { fetchPostById } from "@/lib/actions/postAction";
 import Image from "next/image";
 import createDOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
+import Comments from "./_components/comments";
 type Props = {
     //do đang dùng app redirectory lấy data từ url nên
     //cần phải khai báo ở trong params
@@ -27,6 +28,7 @@ const PostPage = async ({params}: Props) => {
 
         <div dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(post.content)}} />
 
+        <Comments postId={post.id}/>
 
     </main>
   );
