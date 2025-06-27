@@ -33,13 +33,13 @@ const AddComment = ({postId,user,className,refetch}: Props) => {
         else if (state?.ok === false) {
             toast.error("Failed to post comment.");
         }
-    }, [state]);
-    const hanldeOpenDialog = () => {
+    }, [state,refetch]);
+    const handleOpenDialog = () => {
         setOpenDialog(prev => !prev)
     }
   return (
     <>
-        <Button onClick={()=>hanldeOpenDialog()}>Leave Your Comment</Button>
+        <Button onClick={()=>handleOpenDialog()}>Leave Your Comment</Button>
         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         {/* <DialogTrigger asChild={openDialog}>
         </DialogTrigger> */}

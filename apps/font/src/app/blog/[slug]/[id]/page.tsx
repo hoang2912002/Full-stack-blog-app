@@ -4,6 +4,7 @@ import createDOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
 import Comments from "./_components/comments";
 import { getSession } from "@/lib/session";
+import Like from "./_components/like";
 type Props = {
     //do đang dùng app redirectory lấy data từ url nên
     //cần phải khai báo ở trong params
@@ -29,7 +30,7 @@ const PostPage = async ({params}: Props) => {
         </div>
 
         <div dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(post.content)}} />
-
+        <Like postId={post.id} user={session?.user}/>
         <Comments postId={post.id} user={session?.user}/>
 
     </main>

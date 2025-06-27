@@ -5,6 +5,7 @@ const queryClient = new QueryClient;
 type Props = PropsWithChildren;
 const Providers = ({children}: Props) => {
   return (
+    //cần phải bọc QueryClientProvider để có thể dùng hook tanstack
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   )
 };
