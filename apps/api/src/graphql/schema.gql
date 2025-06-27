@@ -69,6 +69,7 @@ type Query {
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
+  createComment(createCommentInput: CreateCommentInput!): Comment!
   signIn(signInInput: SignInInput!): AuthPayloadEntities!
 }
 
@@ -78,6 +79,11 @@ input CreateUserInput {
   email: String!
   bio: String
   avatar: String
+}
+
+input CreateCommentInput {
+  postId: Int!
+  content: String!
 }
 
 input SignInInput {

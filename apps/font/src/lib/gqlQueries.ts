@@ -53,7 +53,7 @@ export const SIGN_IN_MUTATION = gql`
 `;
 
 export const GET_COMMENT_BY_POST_ID = gql`
-  query getPostComments($postId:Int!,$skip:Float,$take:Float) {
+  query getPostComments($postId:Int!,$skip:Int,$take:Int) {
     getPostComments(postId: $postId,skip: $skip,take: $take) {
         id
         content
@@ -66,3 +66,12 @@ export const GET_COMMENT_BY_POST_ID = gql`
     postCommentCount(postId: $postId)
   }
 `;
+
+export const CREATE_COMMENT_MUTATION = gql`
+    mutation createComment($input:CreateCommentInput!){
+        createComment(createCommentInput:$input){
+            id,
+            content,
+        }
+    }
+`

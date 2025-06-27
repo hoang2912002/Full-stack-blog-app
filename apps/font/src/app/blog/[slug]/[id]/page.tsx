@@ -3,6 +3,7 @@ import Image from "next/image";
 import createDOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
 import Comments from "./_components/comments";
+import { getSession } from "@/lib/session";
 type Props = {
     //do đang dùng app redirectory lấy data từ url nên
     //cần phải khai báo ở trong params
@@ -14,6 +15,7 @@ type Props = {
 const PostPage = async ({params}: Props) => {
     const postId = (await params).id
     const post = await fetchPostById(+postId)
+    const session = await getSession()
     const window = new JSDOM('').window;
     const DOMPurify = createDOMPurify(window);
   return (
@@ -28,7 +30,7 @@ const PostPage = async ({params}: Props) => {
 
         <div dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(post.content)}} />
 
-        <Comments postId={post.id}/>
+        <Comments postId={post.id} user={session?.user}/>
 
     </main>
   );
