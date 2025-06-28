@@ -110,3 +110,12 @@ export const GET_USER_POSTS = gql`
     userPostCount
   }
 `;
+
+export const CREATE_POST_MUTATION = gql`
+  mutation createPost($input: CreatePostInput!) {
+    createPost(createPostInput: $input) {
+      id
+    }
+  }
+`;
+

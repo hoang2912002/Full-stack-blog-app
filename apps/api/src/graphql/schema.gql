@@ -78,11 +78,20 @@ type Query {
 }
 
 type Mutation {
+  createPost(createPostInput: CreatePostInput!): Post!
   createUser(createUserInput: CreateUserInput!): User!
   createComment(createCommentInput: CreateCommentInput!): Comment!
   likePost(postId: Int!): Boolean!
   unLikePost(postId: Int!): Boolean!
   signIn(signInInput: SignInInput!): AuthPayloadEntities!
+}
+
+input CreatePostInput {
+  title: String!
+  content: String!
+  thumbnail: String
+  tags: [String!]!
+  published: Boolean!
 }
 
 input CreateUserInput {

@@ -60,4 +60,14 @@ export class PostResolver {
     const userId = context.req.user.id
     return this.postService.userPostCount(userId);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(()=> Post)
+  createPost(
+    @Context() context,
+    @Args("createPostInput") createPostInput:CreatePostInput
+  ){
+    const userId = context.req.user.id
+    return this.postService.createPost({userId,createPostInput});
+  }
 }

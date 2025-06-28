@@ -82,4 +82,30 @@ export class PostService {
       }
     })
   }
+
+  async createPost(
+    {userId,createPostInput}:
+    {userId:number,createPostInput:CreatePostInput}) 
+  {
+    return await this.prisma.post.create({
+      data:{
+        ...createPostInput,
+        author:{
+          connect:{
+            id:userId
+          }
+        },
+        tags:{
+          //connectOrCreate dùng cho relationship n-n
+          //kiểm tra xem nếu ko có tag đó thì thêm
+          connectOrCreate:createPostInput.tags.map(tag=>({
+            where:{name: tag},
+            create:{
+              name:tag
+            }
+          }))
+        }
+      }
+    })
+  }
 }
