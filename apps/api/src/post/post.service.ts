@@ -40,4 +40,46 @@ export class PostService {
       }
     })
   }
+
+  async getUserPosts({
+    skip=0,
+    take=DEFAULT_PAGE_SIZE,
+    userId
+  }:{
+    skip:number,
+    take:number,
+    userId:number,
+  }){
+    return await this.prisma.post.findMany({
+      where:{
+        authorId:userId
+      },
+      select:{
+        id:true,
+        content:true,
+        createdAt:true, 
+        published:true,
+        slug:true,
+        title:true,
+        thumbnail:true,
+        //_count dùng để đếm số lượng theo mỗi bản ghi
+        _count:{
+          select:{
+            comments:true,
+            likes:true
+          }
+        }
+      },
+      skip,
+      take
+    })
+  }
+
+  userPostCount = async (userId:number) => {
+    return await this.prisma.post.count({
+      where:{
+        authorId:userId
+      }
+    })
+  }
 }

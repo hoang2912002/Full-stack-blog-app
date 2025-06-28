@@ -39,3 +39,8 @@ export type CommentEntity = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type Count = {
+  likes:number;
+  comments:number;
+}

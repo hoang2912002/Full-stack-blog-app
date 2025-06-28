@@ -36,5 +36,28 @@ export class PostResolver {
   getPostById(@Args("id",{type:()=>Int}) id:number){
     return this.postService.findOne(id)
   }
-  
+
+  @UseGuards(JwtAuthGuard)
+  @Query(()=> [Post])
+  getUserPosts(
+    @Context() context,
+    @Args("skip",{nullable:true, type:()=>Int}) skip?:number,
+    @Args("take",{nullable:true, type:()=>Int}) take?:number
+  ){
+    const userId = context.req.user.id;
+    return this.postService.getUserPosts({
+      skip,
+      take,
+      userId
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(()=> Int)
+  userPostCount(
+    @Context() context,
+  ){
+    const userId = context.req.user.id
+    return this.postService.userPostCount(userId);
+  }
 }

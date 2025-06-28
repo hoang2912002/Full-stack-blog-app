@@ -9,7 +9,6 @@ export async function GET(req: NextResponse){
     const userId = searchParams.get("userId");
     const name = searchParams.get("name");
     const avatar = searchParams.get("avatar");
-    console.log(accessToken)
     if(!accessToken || !userId || !name) throw new Error("Google oauth failed!")
     
     const res = await fetch(`${BACKEND_URL}/auth/verify-token`,{

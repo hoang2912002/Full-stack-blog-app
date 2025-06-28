@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from '@prisma/client';
+import { hash } from "argon2";
 import { title } from "process";
 import { max } from "rxjs";
 
@@ -14,13 +15,14 @@ function generateSlug(title:string):string{
 }
 
 async function main() {
+    const defaultPassword = await hash("12345678")
     const users = Array.from({length: 10}).map(
         () => ({
             name: faker.person.fullName(),
             email: faker.internet.email(),
             bio: faker.lorem.sentence(),
             avatar: faker.image.avatar(),
-            password: '123456'
+            password: defaultPassword
         })
     );      
 
