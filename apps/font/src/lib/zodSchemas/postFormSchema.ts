@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const PostFormSchema = z.object({
+    postId: z.string().transform(value=>parseInt(value)).optional(),
     title: z.string().min(5).max(200),
     content: z.string().min(20),
     //là chuỗi, ít nhất 1 ký tự

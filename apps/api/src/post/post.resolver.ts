@@ -70,4 +70,24 @@ export class PostResolver {
     const userId = context.req.user.id
     return this.postService.createPost({userId,createPostInput});
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(()=> Post)
+  updatePost(
+    @Context() context,
+    @Args("updatePostInput") updatePostInput: UpdatePostInput,
+  ){
+    const userId = context.req.user.id
+    return this.postService.updatePost({userId,updatePostInput});
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(()=>Boolean)
+  deletePost(
+    @Context() Context,
+    @Args("postId",{type:()=>Int}) postId: number
+  ){
+    const userId = Context.req.user.id
+    return this.postService.deletePost({userId,postId});
+  }
 }

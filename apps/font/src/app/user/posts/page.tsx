@@ -7,11 +7,13 @@ type Props = {
   searchParams: Promise<{[key: string]:string | string[] | undefined}>
 };
 const UserPostPage = async (props: Props) => {
-  const {page} = await props.searchParams
+  const {page, noCache } = await props.searchParams
   const {posts,totalPost} = await fetchUserPosts({
     page: page ? +page : 1,
-    pageSize: DEFAULT_PAGE_SIZE
+    pageSize: DEFAULT_PAGE_SIZE,
+    noCache: !!noCache, // ép về boolean
   })
+  console.log({totalPost})
   return (
     <div className="">
       { (!posts || posts.length <=0) ? 

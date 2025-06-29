@@ -22,6 +22,7 @@ const Pagination = ({
     currentPage,
     totalPages,
   });
+  console.log({pageNumbers,pageNeighbors,currentPage,totalPages,})
   return (
     <div className={cn("flex items-center justify-center gap-2 mt-3", className)}>
       {/* pervious page button */}

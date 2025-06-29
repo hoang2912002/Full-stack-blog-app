@@ -1,10 +1,13 @@
 import { Optional } from '@nestjs/common';
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsBoolean, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Tag } from 'src/tag/entities/tag.entity';
 
 @InputType()
 export class CreatePostInput {
+  @Field({nullable:true})
+  @IsOptional()
+  postId:number
   @Field()
   @IsString()
   title: string;

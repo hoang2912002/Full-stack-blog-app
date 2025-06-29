@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -87,9 +87,10 @@ export class PostService {
     {userId,createPostInput}:
     {userId:number,createPostInput:CreatePostInput}) 
   {
+    const {postId, ...inputData} = createPostInput
     return await this.prisma.post.create({
       data:{
-        ...createPostInput,
+        ...inputData,
         author:{
           connect:{
             id:userId
@@ -107,5 +108,65 @@ export class PostService {
         }
       }
     })
+  }
+
+  async updatePost({
+    userId,
+    updatePostInput
+  }:{
+    userId:number,
+    updatePostInput: UpdatePostInput
+  }){
+    const authorIdMatched = await this.prisma.post.findUnique({
+      where:{
+        id:updatePostInput.postId,
+        authorId:userId
+      }
+    })
+    if(!authorIdMatched) throw new UnauthorizedException()
+    const {postId, ...inputData} = updatePostInput
+    return await this.prisma.post.update({
+      where:{
+        id:updatePostInput.postId,
+        authorId:userId
+      },
+      data:{
+        ...inputData,
+        tags:{
+          set:[],
+          connectOrCreate:updatePostInput.tags.map(tag=>({
+            where:{name: tag},
+            create:{
+              name:tag
+            }
+          }))
+        }
+      }
+    })
+  }
+
+  async deletePost({
+    userId,
+    postId
+  }:{
+    userId:number,
+    postId:number
+  }){
+    const authorIdMatched = await this.prisma.post.findUnique({
+      where:{
+        id:postId,
+        authorId:userId
+      }
+    })
+    if(!authorIdMatched) throw new UnauthorizedException()
+    const result =  await this.prisma.post.delete({
+      where:{
+        id:postId,
+        author:{
+          id:userId
+        }
+      }
+    })
+    return !!result
   }
 }

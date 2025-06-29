@@ -79,6 +79,8 @@ type Query {
 
 type Mutation {
   createPost(createPostInput: CreatePostInput!): Post!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+  deletePost(postId: Int!): Boolean!
   createUser(createUserInput: CreateUserInput!): User!
   createComment(createCommentInput: CreateCommentInput!): Comment!
   likePost(postId: Int!): Boolean!
@@ -87,11 +89,21 @@ type Mutation {
 }
 
 input CreatePostInput {
+  postId: Float
   title: String!
   content: String!
   thumbnail: String
   tags: [String!]!
   published: Boolean!
+}
+
+input UpdatePostInput {
+  postId: Int!
+  title: String
+  content: String
+  thumbnail: String
+  tags: [String!]
+  published: Boolean
 }
 
 input CreateUserInput {

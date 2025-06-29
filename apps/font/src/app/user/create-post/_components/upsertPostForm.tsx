@@ -19,7 +19,7 @@ const UpsertPostForm = ({ state, formAction }: Props) => {
     if (state?.message && state?.ok === true){
         toast.success(state?.message)
     }
-    else{
+    else if(state?.message){
         toast.error(state?.message)
     }
   }, [state]);
@@ -29,7 +29,7 @@ const UpsertPostForm = ({ state, formAction }: Props) => {
       action={formAction}
       className="flex flex-col gap-5 [&>div>label]:text-slate-500 [&>div>input]:transition [&>div>textarea]:transition"
     >
-      {/* <input hidden name="postId" defaultValue={state?.data?.postId} /> */}
+      <input hidden name="postId" defaultValue={state?.data?.postId} />
       <div>
         <Label htmlFor="title">Title</Label>
         <Input
@@ -68,14 +68,14 @@ const UpsertPostForm = ({ state, formAction }: Props) => {
         {!!state?.errors?.thumbnail && (
           <p className="text-red-500 animate-shake">{state.errors.thumbnail}</p>
         )}
-        {/* {(!!imageUrl || !!state?.data?.previousThumbnailUrl) && (
+        {(!!imageUrl || !!state?.data?.previousThumbnailUrl) && (
           <Image
-            src={(imageUrl || state?.data?.previousThumbnailUrl) ?? ""}
+            src={(imageUrl || state?.data?.previousThumbnailUrl) ?? '/no-image.png'}
             alt="post thumbnail"
             width={200}
             height={150}
           />
-        )} */}
+        )}
       </div>
       <div>
         <Label htmlFor="tags">Tags (comma-separated)</Label>
@@ -100,7 +100,6 @@ const UpsertPostForm = ({ state, formAction }: Props) => {
       {!!state?.errors?.published && (
         <p className="text-red-500 animate-shake">{state.errors.published}</p>
       )}
-
       <SubmitButton>Save</SubmitButton>
     </form>
   );

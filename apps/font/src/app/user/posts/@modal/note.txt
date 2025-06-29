@@ -1,0 +1,69 @@
+Ở đây là giải thích chi tiết của cách thức hoạt động @modal ghi đè lên [id]/delete/page
+1 Đầu tiên là khi dùng @modal (hay còn gọi là @segment) + với "(.)" trong thư mục app
+
++ Có nghĩa là khi người dùng truy cập là đường link http://localhost:3000/user/posts/57/delete
+  thay vì nó redirect page, hãy hiển thị nội dung khác ghi đè lên (vd: ở đây là modal)
+
+2 Diagram cách hoạt động
+
+    /app/user/posts
+    ├── layout.tsx
+    ├── [id]
+    │   └── delete
+    │       └── page.tsx             👈 Trang xoá gốc (full page)
+    ├── @modal
+    │   ├── (.)[id]
+    │   │   └── delete
+    │   │       └── page.tsx         👈 Interceptor (hiện modal)
+    │   └── default.tsx              👈 Mặc định không render modal
+
++ Khi truy cập và /user/posts
+
+  * Next.js render children trong layout.tsx là danh sách các post.
+
+  * Segment @modal sẽ hiển thị default.tsx (tức là null), nên ban đầu không có modal gì cả.
+
++ Click vào nút xoá (Link đến http://localhost:3000/user/posts/123/delete)
+
+  * Nếu không có intercepting route, Next.js sẽ load trang /user/posts/[id]/delete/page.tsx 
+    và thay đổi hoàn toàn giao diện.
+
+  * Nhưng vì mình có dùng @segment => Nó render @modal/(.)[id]/delete/page.tsx 
+    vào khu vực modal trong layout, nhưng giữ nguyên nội dung chính children 
+    (tức là không rời khỏi trang danh sách).
+
+3 Tại sao phải đăt @modal/(.)[id]/delete/
+
++ @modal -> là parallel route, giúp bạn render nhiều phần cùng lúc trong layout.
+
++ (.) -> là intercepting segment 
+  * (.) ở đây là render cùng thư mục post
+
+  * (..) là render ở ngoài => y như cách dùng ../
+
+4 Khai báo trong layout.tsx
+
++ Ở đây tôi muốn render ra 1 modal delete ở danh sách cách Posts cho nên là phần
+  parallel route đặt là @modal => Lưu ý cái này có thể đổi flexable tùy theo nhu cầu
+
++ Nhưng trong file layout cần phải khai báo biến giống với parallel route để nextjs nhận dạng
+
+
+5 File default.tsx
+
++ Đầu tiên như tên gọi của nó default khi mới render page do có khai báo ở layout.tsx
+  * Thì nó sẽ render các nội dung ở trong @modal theo biến modal
+
+  * Nếu ko muốn hiển thị nội dung thì cần phải có 1 file default trong @modal và trả về null để (ẩn modal)
+
+6 Cách thức hoạt động
+
++ Khi bạn ấn vào nút delete nếu có intercepting route:
+  * Sẽ intercept (chặn) route gốc: /user/posts/109/delete, và inject vào modal slot (layout.tsx), 
+  chứ không chuyển hẳn route.
+
+  * Cho nên là khi dùng intercepting route sẽ ko thấy hiện tự rerender page
+
+
+
+  
